@@ -15,10 +15,10 @@ def getOrCreateConstituentID(email):
     firstname = ""
     surname = ""
     if "." in username:
-        firstname = username.split(".")[0]
-        surname = username.split(".")[1]
+        firstname = username.split(".")[0].capitalize()
+        surname = username.split(".")[1].capitalize()
     else:
-        surname = username
+        surname = username.capitalize()
 
     db = Database(os.getenv('SUPPORT_DB_NAME'))
     db.query("INSERT INTO `constituents` (firstname, surname, email) SELECT %s, %s, %s WHERE NOT EXISTS (SELECT 1 FROM `constituents` WHERE `email` = %s);", [firstname, surname, email, email])
@@ -103,11 +103,8 @@ if __name__ == "__main__":
 
 
 
-            # TO DO added created to case as it causes it to not appear correclty on cases page
+# names lowercase but capitalise first letter
 
-
-
-
-    
+# find all .au cases, close and add au.gov
 
     
