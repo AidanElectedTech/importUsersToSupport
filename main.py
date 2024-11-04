@@ -35,7 +35,7 @@ def getOrCreateCase(constituentID):
     summaryString = 'Imported from new user sign up'
 
     db = Database(os.getenv('SUPPORT_DB_NAME'))
-    result = db.query("INSERT INTO `cases` (`enquirytypeID`, `constituentID`, `casetypeID`, `summary`, `statusID`, `CaseworkerID`, `createdbyID`, `categoryID`, `CMITSoutcome`, `created`) SELECT '8', %s, '19', %s, '1', '28', '1', '1', %s, %s WHERE NOT EXISTS ( SELECT 1 FROM `cases` WHERE `cases`.`constituentID` = %s AND `CMITSoutcome` = %s);", [constituentID, summaryString, summaryString, constituentID, summaryString, datetime_string])
+    result = db.query("INSERT INTO `cases` (`enquirytypeID`, `constituentID`, `casetypeID`, `summary`, `statusID`, `CaseworkerID`, `createdbyID`, `categoryID`, `CMITSoutcome`, `created`) SELECT '8', %s, '19', %s, '1', '28', '1', '1', %s, %s WHERE NOT EXISTS ( SELECT 1 FROM `cases` WHERE `cases`.`constituentID` = %s AND `CMITSoutcome` = %s);", [constituentID, summaryString, summaryString, datetime_string, constituentID, summaryString])
 
     result = db.query("SELECT cases.caseID FROM `cases` WHERE `cases`.`constituentID` = %s AND `cases`.`CMITSoutcome` = %s;", [constituentID, summaryString])
     db.close()
