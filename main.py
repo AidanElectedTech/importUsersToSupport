@@ -9,6 +9,9 @@ from datetime import datetime
 # Load environment variables from .env file
 load_dotenv()
 
+    current_date = datetime.now()
+    datetime_string = current_date.strftime("%Y-%m-%d %H:%M:%S")
+
 def getOrCreateConstituentID(email):
     username = email.split("@")[0]
 
@@ -25,8 +28,6 @@ def getOrCreateConstituentID(email):
     result = db.query("SELECT `ID` FROM `constituents` where `email` = %s", [email])
     if result != None:
         constituentID = result[0]["ID"]
-        current_date = datetime.now()
-        datetime_string = current_date.strftime("%Y-%m-%d %H:%M:%S")
 
         db.query("INSERT INTO `contactDetails` (`id`, `constituentID`, `type`, `value`, `primary`, `source`, `accuracy`, `status`, `deleted`, `created_at`, `updated_at`) SELECT NULL, %s, '4', %s, '1', 'import', '0', '', '0', %s, NULL WHERE NOT EXISTS (SELECT 1 FROM `contactDetails` where `value` = %s);", [constituentID, email, datetime_string, email,])
 
@@ -37,8 +38,6 @@ def getOrCreateConstituentID(email):
         return result
 
 def getOrCreateCase(constituentID):
-    current_date = datetime.now()
-    datetime_string = current_date.strftime("%Y-%m-%d %H:%M:%S")
     summaryString = 'Imported from new user sign up'
 
     db = Database(os.getenv('SUPPORT_DB_NAME'))
@@ -51,7 +50,6 @@ def getOrCreateCase(constituentID):
         return result[0]["caseID"]
 
 def getOrCreateTagIDs():
-    current_date = datetime.now()
     year, week_number = current_date.isocalendar()[0], current_date.isocalendar()[1]
     db = Database(os.getenv('SUPPORT_DB_NAME'))
 
