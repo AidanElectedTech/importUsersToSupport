@@ -23,11 +23,18 @@ def getOrCreateConstituentID(email):
     db = Database(os.getenv('SUPPORT_DB_NAME'))
     db.query("INSERT INTO `constituents` (firstname, surname, email) SELECT %s, %s, %s WHERE NOT EXISTS (SELECT 1 FROM `constituents` WHERE `email` = %s);", [firstname, surname, email, email])
     result = db.query("SELECT `ID` FROM `constituents` where `email` = %s", [email])
-    db.close()
-    
     if result != None:
-        return result[0]["ID"]
-    return result
+        constituentID = result[0]["ID"]
+        current_date = datetime.now()
+        datetime_string = current_date.strftime("%Y-%m-%d %H:%M:%S")
+
+        db.query("INSERT INTO `contactDetails` (`id`, `constituentID`, `type`, `value`, `primary`, `source`, `accuracy`, `status`, `deleted`, `created_at`, `updated_at`) SELECT NULL, %s, '4', %s, '1', 'import', '0', '', '0', %s, NULL WHERE NOT EXISTS (SELECT 1 FROM `contactDetails` where `value` = %s);", [constituentID, email, datetime_string, email,])
+
+        db.close()
+        return constituentID
+    else:  
+        db.close()
+        return result
 
 def getOrCreateCase(constituentID):
     current_date = datetime.now()
