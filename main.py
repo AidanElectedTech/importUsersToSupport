@@ -9,8 +9,8 @@ from datetime import datetime
 # Load environment variables from .env file
 load_dotenv()
 
-    current_date = datetime.now()
-    datetime_string = current_date.strftime("%Y-%m-%d %H:%M:%S")
+current_date = datetime.now()
+datetime_string = current_date.strftime("%Y-%m-%d %H:%M:%S")
 
 def getOrCreateConstituentID(email):
     username = email.split("@")[0]
