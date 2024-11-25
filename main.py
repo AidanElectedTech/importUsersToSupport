@@ -50,7 +50,7 @@ def getOrCreateCase(constituentID):
         return result[0]["caseID"]
 
 def getOrCreateTagIDs():
-    year, week_number = current_date.isocalendar()[0], current_date.isocalendar()[1]
+    year, week_number, _ = current_date.isocalendar()
     db = Database(os.getenv('SUPPORT_DB_NAME'))
 
     weekTagText = f"New User: {year}, Week {week_number}"
@@ -95,21 +95,9 @@ if __name__ == "__main__":
         for [email] in reader:
             if is_valid_email(email):
                 count = count + 1
+                print(f"\nImported {count} row(s).")
                 constituentID = getOrCreateConstituentID(email)
                 tagIDs = getOrCreateTagIDs()
                 caseID = getOrCreateCase(constituentID)
                 createTaggedIfNotExist(caseID, tagIDs)
                 createPermissionIfNotExist(caseID)
-
-    print(f"\nImported {count} row(s).")
-                
-                    
-            
-
-
-
-# names lowercase but capitalise first letter
-
-# find all .au cases, close and add au.gov
-
-    
